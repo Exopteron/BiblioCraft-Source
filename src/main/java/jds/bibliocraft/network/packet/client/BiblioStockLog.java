@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumHand;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -18,23 +19,31 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class BiblioStockLog implements IMessage {
     NBTTagCompound tags;
-
+    // TODO: Throwing `EnumHand`s everywhere might not be the best way to do it
+    EnumHand hand;
     public BiblioStockLog() {
 
     }
 
-    public BiblioStockLog(NBTTagCompound tags) {
+    public BiblioStockLog(NBTTagCompound tags, EnumHand hand) {
         this.tags = tags;
+        this.hand = hand;
     }
 
     @Override
     public void fromBytes(ByteBuf buf) {
         this.tags = ByteBufUtils.readTag(buf);
+        try {
+            this.hand = EnumHand.values()[buf.readByte()];
+        } catch (Exception e) {
+            this.hand = EnumHand.MAIN_HAND;
+        }
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
         ByteBufUtils.writeTag(buf, this.tags);
+        buf.writeByte(this.hand.ordinal());
     }
 
     public static class Handler implements IMessageHandler<BiblioStockLog, IMessage> {
@@ -78,7 +87,7 @@ public class BiblioStockLog implements IMessage {
                         public void run() {
                             Utils.openCatalogGUI(Minecraft.getMinecraft().player, alphaList, quantaList,
                                     finalCompassStacks,
-                                    finalCompasses, title);
+                                    finalCompasses, title, message.hand);
                         }
                     });
                 }

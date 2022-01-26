@@ -18,6 +18,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 
@@ -67,9 +68,10 @@ public class GuiStockCatalog extends GuiScreen
     private boolean hasCompass = false;
     
     private String theTitle;
-	
-	public GuiStockCatalog(EntityPlayer player, ArrayList<SortedListItem> AlphaList, ArrayList<SortedListItem> QuantaList, ItemStack[] stacks, int[] compasses, String title)
+	private EnumHand hand;
+	public GuiStockCatalog(EntityPlayer player, ArrayList<SortedListItem> AlphaList, ArrayList<SortedListItem> QuantaList, ItemStack[] stacks, int[] compasses, String title, EnumHand hand)
 	{
+		this.hand = hand;
 		this.allowUserInput = true;
 		//this.catalog = stack;
 		this.compassStacks = stacks;
@@ -838,7 +840,7 @@ public class GuiStockCatalog extends GuiScreen
     {
     	Keyboard.enableRepeatEvents(false);
     	String text = this.titleText.getText();
-		BiblioNetworking.INSTANCE.sendToServer(new BiblioStockTitle(text));
+		BiblioNetworking.INSTANCE.sendToServer(new BiblioStockTitle(text, this.hand)); // TODO: Both hands.
     	// ByteBuf buffer = Unpooled.buffer();
     	// ByteBufUtils.writeUTF8String(buffer, text);
     	// BiblioCraft.ch_BiblioStoCatTitle.sendToServer(new FMLProxyPacket(new PacketBuffer(buffer), "BiblioStockTitle"));

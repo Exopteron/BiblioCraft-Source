@@ -35,10 +35,10 @@ public class TileEntityMapFrame extends BiblioTileEntity implements ITickable//T
 	public boolean showText = false;
 	public String showTextString = "";
 	private int counter = 1;
-	public ArrayList xPin;
-	public ArrayList yPin;
-	public ArrayList pinStrings;
-	public ArrayList pinColors;
+	public ArrayList<Float> xPin;
+	public ArrayList<Float> yPin;
+	public ArrayList<String> pinStrings;
+	public ArrayList<Float> pinColors;
 	private EntityItemFrame fauxFrame;// = new EntityItemFrame(this.worldObj);
 	private float checkVariance = 0.01f;
 	

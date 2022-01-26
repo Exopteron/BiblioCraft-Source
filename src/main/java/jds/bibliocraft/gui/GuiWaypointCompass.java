@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
+import jds.bibliocraft.BiblioCraft;
 import jds.bibliocraft.CommonProxy;
 import jds.bibliocraft.items.ItemWaypointCompass;
 import jds.bibliocraft.network.BiblioNetworking;
@@ -160,7 +161,7 @@ public class GuiWaypointCompass extends GuiScreen
     	catch (NumberFormatException  ex)
     	{
     		//ex.printStackTrace();
-    		System.out.println("X or Z value must be an Integer. Positive of Negitave. No letters or decimals accepted.");
+    		BiblioCraft.LOGGER.error("X or Z value must be an Integer. Positive of Negitave. No letters or decimals accepted.");
     	}
     	return false;
     }

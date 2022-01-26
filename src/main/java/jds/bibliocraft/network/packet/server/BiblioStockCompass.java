@@ -58,6 +58,7 @@ public class BiblioStockCompass implements IMessage {
                         }
                         tags.setInteger("XCoord", message.x);
                         tags.setInteger("ZCoord", message.z);
+                        message.title = message.title.substring(0, Math.min(message.title.length(), 42)); // make sure string is in length
                         tags.setString("WaypointName", message.title);
                         compass.setTagCompound(tags);
                         player.inventory.setInventorySlotContents(message.slotNumber, compass);

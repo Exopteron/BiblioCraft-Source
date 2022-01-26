@@ -28,6 +28,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.management.PlayerChunkMap;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -162,9 +163,9 @@ public class Utils {
     }
 	@SideOnly(Side.CLIENT)
 	public static void openCatalogGUI(EntityPlayer player, ArrayList<SortedListItem> AlphaList,
-			ArrayList<SortedListItem> QuantaList, ItemStack[] stacks, int[] compasses, String title) {
+			ArrayList<SortedListItem> QuantaList, ItemStack[] stacks, int[] compasses, String title, EnumHand hand) {
 		Minecraft.getMinecraft()
-				.displayGuiScreen(new GuiStockCatalog(player, AlphaList, QuantaList, stacks, compasses, title));
+				.displayGuiScreen(new GuiStockCatalog(player, AlphaList, QuantaList, stacks, compasses, title, hand));
 		// Minecraft.getMinecraft()AlphaList.
 	}
     public static void sendARecipeBookTextPacket(EntityPlayerMP player, String text, int slot) {
