@@ -3,6 +3,7 @@ package jds.bibliocraft.blocks;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.vecmath.Quat4f;
 import javax.vecmath.Vector3f;
 
@@ -10,6 +11,8 @@ import jds.bibliocraft.BiblioCraft;
 import jds.bibliocraft.CommonProxy;
 import jds.bibliocraft.helpers.EnumColor;
 import jds.bibliocraft.helpers.EnumVertPosition;
+import jds.bibliocraft.network.BiblioNetworking;
+import jds.bibliocraft.network.packet.client.BiblioSoundPlayer;
 import jds.bibliocraft.states.TextureState;
 import jds.bibliocraft.tileentities.BiblioTileEntity;
 import jds.bibliocraft.tileentities.TileEntityCase;
@@ -25,17 +28,20 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.model.TRSRTransformation;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 public class BlockCase extends BiblioWoodBlock
 {
 	public static final String name = "Case";
 	public static final BlockCase instance = new BlockCase();
+	public static final float range = 32.0F;
 	
 	public BlockCase()
 	{
@@ -54,13 +60,16 @@ public class BlockCase extends BiblioWoodBlock
 				if (player.isSneaking())
 				{
 					tile.setOpenLid(!tile.getOpenLid());
+					TargetPoint target = new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), range);
 					if (tile.getOpenLid())
 					{
-						world.playSound(null, pos, CommonProxy.SOUND_CASE_OPEN, SoundCategory.BLOCKS, 1.0F, 1.0F);
+						//world.playSound(null, pos, CommonProxy.SOUND_CASE_OPEN, SoundCategory.BLOCKS, 1.0F, 1.0F); 
+						BiblioNetworking.INSTANCE.sendToAllAround(new BiblioSoundPlayer(CommonProxy.SOUND_CASE_OPEN_TEXT, pos, 1.0F, 1.0F), target);
 					}
 					else
 					{
-						world.playSound(null, pos, CommonProxy.SOUND_CASE_CLOSE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+						//world.playSound(null, pos, CommonProxy.SOUND_CASE_CLOSE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+						BiblioNetworking.INSTANCE.sendToAllAround(new BiblioSoundPlayer(CommonProxy.SOUND_CASE_CLOSE_TEXT, pos, 1.0F, 1.0F), target);
 					}
 				}
 				else if (tile.getOpenLid())
